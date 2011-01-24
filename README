@@ -1,0 +1,152 @@
+CliOptions class set
+http://github.com/tremby/clioptions
+
+Copyright 2011 Bart Nagel (bart@tremby.net)
+
+LICENCE
+-------
+
+This program is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free Software 
+Foundation, either version 3 of the License, or (at your option) any later 
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with 
+this program. If not, see <http://www.gnu.org/licenses/>.
+
+OVERVIEW AND USAGE
+------------------
+
+This is a set of classes meant as a replacement for PHP's rather lacking 
+getopt() function.
+
+Short and long option names are supported (short with a leading hyphen, long 
+with two preceding hyphens). Only one of them need be present, but an option can 
+have both. Short options can be grouped together (as long as all but possibly 
+the last do not accept arguments). Long options can be abbreviated as long as 
+the abbreviation is not ambiguous.
+
+Options can also be given help text and the list of options, their types, 
+defaults and any help text can be output.
+
+If a short option requires an argument it can be given directly after the option 
+letter or as the next argument:
+	-aValue
+or
+	-a Value
+
+If a short option has an optional argument it must be given directly after the 
+option letter, if at all.
+	-aValue
+or
+	-a
+
+If a long option requires an argument it can be given directly after the option 
+(but separated by an "=") or as the next argument:
+	--option=Value
+or
+	--option Value
+
+If a long option has an optional argument it must be given directly after the 
+option (but separated by an "="), if at all:
+	--option=Value
+or
+	--option
+
+If the "=" is written but no value is given, the value is the empty string, 
+rather than the option being treated as not given.
+
+If the argument "--" is encountered, that signifies the end of options and any 
+remaining arguments will be treated as non-option arguments.
+
+Option types:
+	CliOption::TYPE_SWITCH (default)
+		If not given, the value for the option is false by default. If present, 
+		the value for the option is true. If given more than once, nothing more 
+		happens.
+		No argument is accepted.
+	CliOption::TYPE_ACCUMULATOR
+		If not given, the value for the option is 0 by default. Each time the 
+		option is given the value is incremented by 1. This is good for 
+		verbosity levels, for instance.
+		No argument is accepted.
+	CliOption::TYPE_VALUE
+		If not given, the value for the option is false by default. The argument 
+		required replaces the default value or any value given for the option 
+		earlier in the command line.
+	CliOption::TYPE_OPTIONALVALUE
+		If not given, the value for the option is false by default. If the 
+		option is present but no argument is given the value is set to true. If 
+		an argument is given the value is replaced with that string argument.
+	CliOption::TYPE_MULTIPLEVALUE
+		If not given, the value for the option is an empty array by default. An 
+		argument is required and each time it is given it is added as a new 
+		element to the array.
+
+EXAMPLE
+-------
+
+	<?php
+	include "CliOptions.class.php";
+	$opts = new CliOptions();
+	$opts->add("h", "help");
+	$opts->add(null, "version");
+	$opts->add("v", "verbose", CliOption::TYPE_ACCUMULATOR, null,
+		"Give more than once to increment the verbosity level");
+	$opts->add("s", "stylesheet", CliOption::TYPE_MULTIPLEVALUE,
+		array("default.css"), "Any number of override stylesheets");
+	$opts->add("o", null, CliOption::TYPE_VALUE, null,
+		"Output to file instead of stdout");
+	$opts->add(null, "log", CliOption::TYPE_OPTIONALVALUE, null,
+		"Write to a log file -- give 'error' to log only errors");
+
+	$opts->showopts();
+
+	try {
+		var_dump($opts->getopts());
+	} catch (CliOptionException $e) {
+		echo "something went wrong!\n" . $e;
+	}
+	?>
+
+This will output information on the options and then parse the arguments which 
+were given. Running it with the options
+	--verbose -s override.css --stylesheet=override2.css -vo output.html --log
+produces the option list and then something like the following:
+	array {
+		["_"] => array {
+			[0] => "arg1"
+			[1] => "arg2"
+		}
+		["help"] => false
+		["version"] => false
+		["verbose"] => 2
+		["stylesheet"] => array {
+			[0] => "default.css"
+			[1] => "override.css"
+			[2] => "override2.css"
+		}
+		["o"] => "output.html"
+		["log"] => true
+	}
+
+Note that the "_" index holds an array of all non-option arguments.
+
+Passing
+	--ver
+causes an exception to be thrown with the message "Long option '--ver' doesn't 
+exist but is an ambiguous abbreviation of 'version', 'verbose'".
+
+Passing instead
+	--verb
+works -- since it can uniquely be expanded to "verbose", then "verbose" option 
+is activated.
+
+MORE INFORMATION
+----------------
+
+See the comments in the source code for more information.
