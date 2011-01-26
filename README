@@ -115,7 +115,7 @@ EXAMPLE
 
 This will output information on the options and then parse the arguments which 
 were given. Running it with the options
-	--verbose -s override.css --stylesheet=override2.css -vo output.html --log
+	--verbose arg1 -s override.css --stylesheet=override2.css -vo output.html arg2 --log
 produces the option list and then something like the following:
 	array {
 		["_"] => array {
