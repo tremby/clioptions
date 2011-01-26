@@ -67,10 +67,12 @@ class CliOptions {
 		return $this;
 	}
 
-	/** showopts
-	 * Print out each option and its type, default and any help text
+	/** listopts
+	 * Return a string showing each option and its type, default and any help 
+	 * text
 	 */
-	public function showopts() {
+	public function listopts() {
+		ob_start();
 		foreach ($this->options as $option) {
 			if ($option->hasshort()) {
 				if ($option->musttakearg()) {
@@ -116,6 +118,7 @@ class CliOptions {
 			if (strlen($option->helptext()))
 				echo "\t" . $option->helptext() . "\n";
 		}
+		return ob_get_clean();
 	}
 
 	// return true if there are more arguments left to process

@@ -104,7 +104,7 @@ EXAMPLE
 	$opts->add(null, "log", CliOption::TYPE_OPTIONALVALUE, null,
 		"Write to a log file -- give 'error' to log only errors");
 
-	$opts->showopts();
+	echo "Options:\n" . $opts->listopts() . "\n";
 
 	try {
 		var_dump($opts->getopts());
