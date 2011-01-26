@@ -65,7 +65,30 @@ remaining arguments will be treated as non-option arguments.
 
 If the argument "-" is encountered it is treated as a non-option argument.
 
-Option types:
+ASSIGNING OPTIONS
+-----------------
+
+This can be done with the most flexibility with the add() method. This takes up 
+to five arguments: the short option name (a single alphanumeric character), a 
+long option name (at least two alphanumeric characters, with hyphens allowed 
+after the first character), the option type, its default value and some help 
+text. At least one of the short and long option names are required, any other 
+arguments can be skipped by passing null. See the comments above 
+CliOption::__construct for more information or see the example below.
+
+The option types are detailed in the OPTION TYPES section below.
+
+Options can also be assigned using a Gnu getopt-like syntax using the 
+add_getopt() method. This takes a string of short option characters which can be 
+followed by special characters to specify a particular type. The default type is 
+switch. Follow a character with + for the accumulator type, : for required 
+value, :: for optional value or ::: for multiple value. These types map directly 
+to the types detailed below. No long option names are assigned when using this 
+method.
+
+OPTION TYPES
+------------
+
 	CliOption::TYPE_SWITCH (default)
 		If not given, the value for the option is false by default. If present, 
 		the value for the option is true. If given more than once, nothing more 
@@ -89,8 +112,8 @@ Option types:
 		argument is required and each time it is given it is added as a new 
 		element to the array.
 
-EXAMPLE
--------
+EXAMPLES
+--------
 
 	<?php
 	include "CliOptions.class.php";
@@ -147,6 +170,12 @@ Passing instead
 	--verb
 works: since it can uniquely be expanded to "verbose", the "verbose" option is 
 activated.
+
+A use of the add_getopt() method could look like the following:
+	$opts->add_getopt("hv+o:s:::l::abc");
+This would add, all in one go, four switch options (h, a, b and c), one 
+accumulating switch (v) and one each of required value, multiple value and 
+optional value (o, s and l, respectively).
 
 MORE INFORMATION
 ----------------

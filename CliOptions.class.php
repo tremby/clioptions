@@ -67,6 +67,40 @@ class CliOptions {
 		return $this;
 	}
 
+	/** add_getopt
+	 * Add options with syntax similar to Gnu getopt
+	 * The argument, $optstring, is a string of short option characters which 
+	 * can be followed by special characters to specify a particular type. If 
+	 * the option character is "a":
+	 *	a		CliOption::TYPE_SWITCH
+	 *	a+		CliOption::TYPE_ACCUMULATOR
+	 *	a:		CliOption::TYPE_VALUE
+	 *	a::		CliOption::TYPE_OPTIONALVALUE
+	 *	a:::	CliOption::TYPE_MULTIPLEVALUE
+	 * No long option names are assigned when using this method.
+	 */
+	public function add_getopt($optstring) {
+		for ($i = 0; $i < strlen($optstring); $i++) {
+			$key = $optstring[$i];
+			if (strlen($optstring) > $i + 3 && substr($optstring, $i + 1, 3) == ":::") {
+				$type = CliOption::TYPE_MULTIPLEVALUE;
+				$i += 3;
+			} else if (strlen($optstring) > $i + 2 && substr($optstring, $i + 1, 2) == "::") {
+				$type = CliOption::TYPE_OPTIONALVALUE;
+				$i += 2;
+			} else if (strlen($optstring) > $i + 1 && $optstring[$i + 1] == ":") {
+				$type = CliOption::TYPE_VALUE;
+				$i++;
+			} else if (strlen($optstring) > $i + 1 && $optstring[$i + 1] == "+") {
+				$type = CliOption::TYPE_ACCUMULATOR;
+				$i++;
+			} else
+				$type = CliOption::TYPE_SWITCH;
+			$this->add($key, null, $type);
+		}
+		return $this;
+	}
+
 	/** listopts
 	 * Return a string showing each option and its type, default and any help 
 	 * text
