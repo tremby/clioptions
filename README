@@ -109,7 +109,7 @@ EXAMPLE
 	try {
 		var_dump($opts->getopts());
 	} catch (CliOptionException $e) {
-		echo "something went wrong!\n" . $e;
+		echo "something went wrong!\n" . $e->getMessage();
 	}
 	?>
 
