@@ -140,6 +140,8 @@ class CliOptions {
 	 * associative array
 	 * Any non-option arguments are in an array given by the "_" index, in the 
 	 * order in which they appeared on the commandline.
+	 * Any number of these are accepted -- if they're to be disallowed or 
+	 * limited you need to write the logic for that yourself.
 	 * Other indices are for each option -- the index is the long option name if 
 	 * it exists, otherwise the short option.
 	 * The values depend on the option type: boolean for switch, integer for an 
