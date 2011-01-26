@@ -57,40 +57,40 @@ class CliOption {
 	 */
 	public function __construct($short = null, $long = null, $type = self::TYPE_SWITCH, $default = null, $helptext = null) {
 		if (!is_null($short) && (!is_string($short) || !preg_match('%^[a-zA-Z0-9]$%', $short)))
-			die("CliOption: short option must be one alphanumeric character");
+			die("CliOption: short option must be one alphanumeric character\n");
 		$this->short = $short;
 
 		if (!is_null($long) && (!is_string($long) || !preg_match('%^[a-zA-Z0-9][a-zA-Z0-9-]+$%', $long)))
-			die("CliOption: long option must be a string at least two characters long, the first of which is alphanumeric, the rest of which also allowing hyphens");
+			die("CliOption: long option must be a string at least two characters long, the first of which is alphanumeric, the rest of which also allowing hyphens\n");
 		$this->long = $long;
 
 		if (is_null($short) && is_null($long))
-			die("CliOption: option must have at least one of short and long forms");
+			die("CliOption: option must have at least one of short and long forms\n");
 
 		switch ($type) {
 			case self::TYPE_SWITCH:
 				if (is_null($this->default))
 					$default = false;
 				else if (!is_bool($default))
-					die("CliOption: default must be a boolean for switch type, or null to keep the basic default");
+					die("CliOption: default must be a boolean for switch type, or null to keep the basic default\n");
 				break;
 			case self::TYPE_ACCUMULATOR:
 				if (is_null($this->default))
 					$default = 0;
 				else if (!is_int($default))
-					die("CliOption: default must be zero or a positive integer for accumulator type, or null to keep the basic default");
+					die("CliOption: default must be zero or a positive integer for accumulator type, or null to keep the basic default\n");
 				break;
 			case self::TYPE_VALUE:
 				if (is_null($default))
 					$default = false;
 				else if (!is_string($default))
-					die("CliOption: default must be a string for value type, or null to keep the basic default");
+					die("CliOption: default must be a string for value type, or null to keep the basic default\n");
 				break;
 			case self::TYPE_OPTIONALVALUE:
 				if (is_null($default))
 					$default = false;
 				else if (!is_bool($default) && !is_string($default))
-					die("CliOption: default must be a boolean or a string for optional value type, or null to keep the basic default");
+					die("CliOption: default must be a boolean or a string for optional value type, or null to keep the basic default\n");
 				break;
 			case self::TYPE_MULTIPLEVALUE:
 				$errormessage = "CliOption: default must be an array (which could be empty) of string values for multiple value type, or null to keep the basic default";
@@ -103,7 +103,7 @@ class CliOption {
 						die($errormessage);
 				break;
 			default:
-				die("CliOption: one of the CliOption::TYPE_* constants should be used for type");
+				die("CliOption: one of the CliOption::TYPE_* constants should be used for type\n");
 		}
 		$this->type = $type;
 		$this->default = $default;
