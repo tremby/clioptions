@@ -38,11 +38,15 @@ class CliOptions {
 
 	/** constructor
 	 * Optionally takes an array of command line arguments, but uses 
-	 * $_SERVER["argv"] by default
+	 * $_SERVER["argv"] by default. If using $_SERVER["argv"] the first argument 
+	 * is discarded.
 	 */
 	public function __construct($source = null) {
 		if (is_null($source))
 			$source = $_SERVER["argv"];
+
+		if ($source == $_SERVER["argv"])
+			array_shift($source);
 
 		if (!is_array($source))
 			die("CliOptions: source must be an array");
