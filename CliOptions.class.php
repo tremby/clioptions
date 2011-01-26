@@ -206,7 +206,7 @@ class CliOptions {
 						throw new CliOptionRequiresArgumentException("Option '--" . $option->long() . "' requires an argument");
 					$value = $this->getarg();
 				}
-			} else if ($arg[0] == "-") {
+			} else if (strlen($arg) > 1 && $arg[0] == "-") {
 				// short option letter
 				$key = $arg[1];
 

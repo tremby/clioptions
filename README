@@ -63,6 +63,8 @@ rather than the option being treated as not given.
 If the argument "--" is encountered, that signifies the end of options and any 
 remaining arguments will be treated as non-option arguments.
 
+If the argument "-" is encountered it is treated as a non-option argument.
+
 Option types:
 	CliOption::TYPE_SWITCH (default)
 		If not given, the value for the option is false by default. If present, 
