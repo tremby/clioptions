@@ -143,8 +143,8 @@ exist but is an ambiguous abbreviation of '--version', '--verbose'".
 
 Passing instead
 	--verb
-works -- since it can uniquely be expanded to "verbose", then "verbose" option 
-is activated.
+works: since it can uniquely be expanded to "verbose", the "verbose" option is 
+activated.
 
 MORE INFORMATION
 ----------------
