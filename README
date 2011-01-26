@@ -139,7 +139,7 @@ Note that the "_" index holds an array of all non-option arguments.
 Passing
 	--ver
 causes an exception to be thrown with the message "Long option '--ver' doesn't 
-exist but is an ambiguous abbreviation of 'version', 'verbose'".
+exist but is an ambiguous abbreviation of '--version', '--verbose'".
 
 Passing instead
 	--verb

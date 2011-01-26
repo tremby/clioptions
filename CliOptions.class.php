@@ -282,7 +282,7 @@ class CliOptions {
 			throw new CliOptionNotFoundException("Long option '--$key' doesn't exist, nor does it abbreviate any existing long option");
 		$fullnames = array();
 		foreach ($abbreviations as $option)
-			$fullnames[] = $option->long();
+			$fullnames[] = "--" . $option->long();
 		throw new CliOptionNotFoundException("Long option '--$key' doesn't exist but is an ambiguous abbreviation of '" . implode("', '", $fullnames) . "'");
 	}
 
